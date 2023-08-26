@@ -1,6 +1,5 @@
 package com.nikhilkarve.rest;
 
-import com.nikhilkarve.dao.CustomerDAO;
 import com.nikhilkarve.entity.Customer;
 import com.nikhilkarve.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,15 @@ public class CustomerRestController {
     }
 
     @GetMapping("/customers")
-    public List<Customer> getCustomers(CustomerDAO customerDAO){
+    public List<Customer> findAll(){
         return customerService.findAll();
+    }
+
+    @GetMapping("/customers/{customerId}")
+    public Customer getCustomerById(@PathVariable int customerId) {
+        Customer theCustomer = customerService.findById(customerId);
+        if(theCustomer == null) throw new RuntimeException("Customer not found: " + customerId);
+        return  theCustomer;
     }
 
     @PostMapping("/customers")
